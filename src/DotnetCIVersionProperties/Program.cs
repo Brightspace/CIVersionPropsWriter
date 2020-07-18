@@ -22,7 +22,9 @@ namespace DotnetCIVersionProperties {
 
 				ProjectVersionPropsWriter.Write(
 						output: sw,
-						assemblyFileVersion: args.AssemblyFileVersion,
+						major: args.VersionPrefix.Major,
+						minor: args.VersionPrefix.Minor,
+						patch: args.VersionPrefix.Build,
 						branch: args.Branch,
 						tag: args.Tag,
 						build: args.Build,

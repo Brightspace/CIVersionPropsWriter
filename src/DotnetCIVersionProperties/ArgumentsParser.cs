@@ -7,8 +7,8 @@ namespace DotnetCIVersionProperties {
 
 	internal static class ArgumentsParser {
 
-		internal const string Usage = "Usage: DotnetCIVersionProperties.exe --output <path> [--assemblyFileVersion <version>]";
-		internal const string AssemblyFileVersionVariable = "ASSEMBLY_FILE_VERSION";
+		internal const string Usage = "Usage: dotnet ci-version-properties --output <path> [--version <version>]";
+		internal const string VersionPrefixVariable = "VERSION_PREFIX";
 
 		private delegate bool EnvironmentValueParser( string value, out string parsed );
 
@@ -81,7 +81,7 @@ namespace DotnetCIVersionProperties {
 				string arg = arguments[ index ];
 				switch( arg ) {
 
-					case "--assemblyFileVersion": {
+					case "--versionPrefix": {
 
 							if( index + 1 == arguments.Length ) {
 								break;
@@ -139,16 +139,16 @@ namespace DotnetCIVersionProperties {
 
 			if( assemblyFileVersion == null ) {
 
-				string afv = environment( AssemblyFileVersionVariable );
+				string afv = environment( VersionPrefixVariable );
 				if( string.IsNullOrEmpty( afv ) ) {
 
-					errors.WriteLine( $"{ AssemblyFileVersionVariable } environment variable not set" );
+					errors.WriteLine( $"{ VersionPrefixVariable } environment variable not set" );
 					return ParseResult.MissingAssemblyFileVersion;
 				}
 
 				if( !Version.TryParse( afv, out assemblyFileVersion ) ) {
 
-					errors.WriteLine( $"Invalid { AssemblyFileVersionVariable } value: { afv }" );
+					errors.WriteLine( $"Invalid { VersionPrefixVariable } value: { afv }" );
 					return ParseResult.InvalidAssemblyFileVersion;
 				}
 			}
@@ -195,7 +195,7 @@ namespace DotnetCIVersionProperties {
 
 			args = new Arguments(
 					output: outputPath,
-					assemblyFileVersion: assemblyFileVersion,
+					versionPrefix: assemblyFileVersion,
 					branch: branch,
 					tag: tag,
 					build: buildNumber,
