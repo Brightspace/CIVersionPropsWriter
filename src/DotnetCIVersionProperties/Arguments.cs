@@ -7,7 +7,7 @@ namespace DotnetCIVersionProperties {
 
 		public Arguments(
 				FileInfo output,
-				Version assemblyFileVersion,
+				Version versionPrefix,
 				string branch,
 				string tag,
 				int build,
@@ -15,7 +15,7 @@ namespace DotnetCIVersionProperties {
 			) {
 
 			Output = output;
-			AssemblyFileVersion = assemblyFileVersion;
+			VersionPrefix = versionPrefix;
 			Branch = branch;
 			Tag = tag;
 			Build = build;
@@ -23,7 +23,7 @@ namespace DotnetCIVersionProperties {
 		}
 
 		public FileInfo Output { get; }
-		public Version AssemblyFileVersion { get; }
+		public Version VersionPrefix { get; }
 		public string Branch { get; }
 		public string Tag { get; }
 		public int Build { get; }

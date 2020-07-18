@@ -7,16 +7,14 @@ namespace DotnetCIVersionProperties {
 
 		public static void Write(
 				TextWriter output,
-				Version assemblyFileVersion,
+				int major,
+				int minor,
+				int patch,
 				string branch,
 				string tag,
 				int build,
 				string sha1
 			) {
-
-			int major = assemblyFileVersion.Major;
-			int minor = assemblyFileVersion.Minor;
-			int patch = assemblyFileVersion.Build;
 
 			string versionPrefix = $"{ major }.{ minor }.{ patch }";
 

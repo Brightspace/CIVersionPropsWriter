@@ -31,7 +31,7 @@ namespace DotnetCIVersionProperties.Tests {
 		}
 
 		[TestCaseSource( nameof( VendorEnvironmentVariableTestCases ) )]
-		public void AssemblyFileVersionArg(
+		public void VersionPrefixArg(
 				string branchVariable,
 				string tagVariable,
 				string buildNumberVariable,
@@ -46,13 +46,13 @@ namespace DotnetCIVersionProperties.Tests {
 			} );
 
 			string[] arguments = new[] {
-				"--assemblyFileVersion", "10.6.9",
+				"--versionPrefix", "10.6.9",
 				"--output", "versions.cs"
 			};
 
 			Arguments args = AssertSuccessfulTryParse( env, arguments );
 			Assert.That( args.Output.Name, Is.EqualTo( "versions.cs" ) );
-			Assert.That( args.AssemblyFileVersion, Is.EqualTo( new Version( 10, 6, 9 ) ) );
+			Assert.That( args.VersionPrefix, Is.EqualTo( new Version( 10, 6, 9 ) ) );
 			Assert.That( args.Branch, Is.EqualTo( "master" ) );
 			Assert.That( args.Tag, Is.EqualTo( "tagger" ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
@@ -69,7 +69,7 @@ namespace DotnetCIVersionProperties.Tests {
 			) {
 
 			Func<string, string> env = MockEnvironment( new Dictionary<string, string> {
-				{ ArgumentsParser.AssemblyFileVersionVariable, "10.6.9" },
+				{ ArgumentsParser.VersionPrefixVariable, "10.6.9" },
 				{ branchVariable, "master" },
 				{ tagVariable, "tagger" },
 				{ buildNumberVariable, "3433" },
@@ -82,7 +82,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			Arguments args = AssertSuccessfulTryParse( env, arguments );
 			Assert.That( args.Output.Name, Is.EqualTo( "versions.cs" ) );
-			Assert.That( args.AssemblyFileVersion, Is.EqualTo( new Version( 10, 6, 9 ) ) );
+			Assert.That( args.VersionPrefix, Is.EqualTo( new Version( 10, 6, 9 ) ) );
 			Assert.That( args.Branch, Is.EqualTo( "master" ) );
 			Assert.That( args.Tag, Is.EqualTo( "tagger" ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
@@ -123,13 +123,13 @@ namespace DotnetCIVersionProperties.Tests {
 			} );
 
 			string[] arguments = new[] {
-				"--assemblyFileVersion", "10.6.9",
+				"--versionPrefix", "10.6.9",
 				"--output", "versions.cs"
 			};
 
 			Arguments args = AssertSuccessfulTryParse( env, arguments );
 			Assert.That( args.Output.Name, Is.EqualTo( "versions.cs" ) );
-			Assert.That( args.AssemblyFileVersion, Is.EqualTo( new Version( 10, 6, 9 ) ) );
+			Assert.That( args.VersionPrefix, Is.EqualTo( new Version( 10, 6, 9 ) ) );
 			Assert.That( args.Branch, Is.EqualTo( expectedBranch ) );
 			Assert.That( args.Tag, Is.EqualTo( expectedTag ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
@@ -160,14 +160,14 @@ namespace DotnetCIVersionProperties.Tests {
 
 		private static IEnumerable<InvalidArgsTestCase> InvalidArgumentsTestCases() {
 
-			Func<string, string> withAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
-				{ ArgumentsParser.AssemblyFileVersionVariable, "10.6.9" },
+			Func<string, string> withVersionPrefix = MockEnvironment( new Dictionary<string, string> {
+				{ ArgumentsParser.VersionPrefixVariable, "10.6.9" },
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
 				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 			} );
 
-			Func<string, string> withoutAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
+			Func<string, string> withoutVersionPrefix = MockEnvironment( new Dictionary<string, string> {
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
 				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
@@ -175,7 +175,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "NoArguments",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: Array.Empty<string>(),
 					expectedResult: ArgumentsParser.ParseResult.NoArguments,
 					expectedErrors: Usage
@@ -183,7 +183,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "ExtraArguments - Before",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--random", "--output", "out.props" },
 					expectedResult: ArgumentsParser.ParseResult.ExtraArguments,
 					expectedErrors: "Invalid arguments: --random\r\n\r\n" + Usage
@@ -191,7 +191,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "ExtraArguments - After",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--random" },
 					expectedResult: ArgumentsParser.ParseResult.ExtraArguments,
 					expectedErrors: "Invalid arguments: --random\r\n\r\n" + Usage
@@ -199,69 +199,69 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "MissingOutputPath",
-					environment: withoutAssemblyFileVersion,
-					arguments: new[] { "--assemblyFileVersion", "1.2.3" },
+					environment: withoutVersionPrefix,
+					arguments: new[] { "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingOutputPath,
 					expectedErrors: "Invalid arguments: output path not specified\r\n\r\n" + Usage
 				);
 
 			yield return new InvalidArgsTestCase(
 					name: "IncompleteOutputPath",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output" },
 					expectedResult: ArgumentsParser.ParseResult.MissingOutputPath,
 					expectedErrors: "Invalid arguments: output path not specified\r\n\r\n" + Usage
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "MissingAssemblyFileVersion",
-					environment: withoutAssemblyFileVersion,
+					name: "MissingVersionPrefix",
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props" },
-					expectedResult: ArgumentsParser.ParseResult.MissingAssemblyFileVersion,
-					expectedErrors: "ASSEMBLY_FILE_VERSION environment variable not set\r\n"
+					expectedResult: ArgumentsParser.ParseResult.MissingVersionPrefix,
+					expectedErrors: "VERSION_PREFIX environment variable not set\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "IncompleteAssemblyFileVersion",
-					environment: withoutAssemblyFileVersion,
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion" },
-					expectedResult: ArgumentsParser.ParseResult.MissingAssemblyFileVersion,
-					expectedErrors: "ASSEMBLY_FILE_VERSION environment variable not set\r\n"
+					name: "IncompleteVersionPrefix",
+					environment: withoutVersionPrefix,
+					arguments: new[] { "--output", "out.props", "--versionPrefix" },
+					expectedResult: ArgumentsParser.ParseResult.MissingVersionPrefix,
+					expectedErrors: "VERSION_PREFIX environment variable not set\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Command Line",
-					environment: withoutAssemblyFileVersion,
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "junk" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
+					name: "InvalidVersionPrefix - Command Line",
+					environment: withoutVersionPrefix,
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "junk" },
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
 					expectedErrors: "Invalid assembly file version: junk\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Environment",
+					name: "InvalidVersionPrefix - Environment",
 					environment: MockEnvironment( new Dictionary<string, string> {
-						{ ArgumentsParser.AssemblyFileVersionVariable, "Junk" },
+						{ ArgumentsParser.VersionPrefixVariable, "Junk" },
 						{ Vendors.GithubActions.BuildNumberVariable, "3433" },
 						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
-					expectedErrors: "Invalid ASSEMBLY_FILE_VERSION value: Junk\r\n"
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
+					expectedErrors: "Invalid VERSION_PREFIX value: Junk\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Revision",
-					environment: withoutAssemblyFileVersion,
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3.4" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
-					expectedErrors: "Assembly file version must be in the format MAJOR.MINOR.PATCH\r\n"
+					name: "InvalidVersionPrefix - Revision",
+					environment: withoutVersionPrefix,
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3.4" },
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
+					expectedErrors: "Assembly file version must be in the format \"major.minor.patch\"\r\n"
 				);
 
 
 			yield return new InvalidArgsTestCase(
 					name: "InvalidOutputPath",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output", "  " },
 					expectedResult: ArgumentsParser.ParseResult.InvalidOutputPath,
 					expectedErrors: "Invalid output path:   \r\n"
@@ -273,7 +273,7 @@ namespace DotnetCIVersionProperties.Tests {
 						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingBuildNumber,
 					expectedErrors: "One of [ APPVEYOR_BUILD_NUMBER, CIRCLE_BUILD_NUM, GITHUB_RUN_NUMBER ] environment variables is required\r\n"
 				);
@@ -285,7 +285,7 @@ namespace DotnetCIVersionProperties.Tests {
 						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.InvalidBuildNumber,
 					expectedErrors: "Invalid GITHUB_RUN_NUMBER value: junk\r\n"
 				);
@@ -296,7 +296,7 @@ namespace DotnetCIVersionProperties.Tests {
 						{ Vendors.CircleCi.BuildNumberVariable, "888" },
 						{ Vendors.CircleCi.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingBranch,
 					expectedErrors: "One of [ APPVEYOR_REPO_BRANCH, CIRCLE_BRANCH, GITHUB_REF ] environment variables is required\r\n"
 				);
@@ -307,7 +307,7 @@ namespace DotnetCIVersionProperties.Tests {
 						{ Vendors.GithubActions.BuildNumberVariable, "45" },
 						{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
 					} ),
-					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
+					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingSha1,
 					expectedErrors: "One of [ APPVEYOR_REPO_COMMIT, CIRCLE_SHA1, GITHUB_SHA ] environment variables is required\r\n"
 				);

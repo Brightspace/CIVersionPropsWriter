@@ -25,7 +25,7 @@ namespace DotnetCIVersionProperties.Tests {
 </Project>
 ";
 			AssertWrite(
-					assemblyFileVersion: new Version( 10, 6, 8 ),
+					versionPrefix: new Version( 10, 6, 8 ),
 					branch: "feature/test",
 					tag: string.Empty,
 					build: 93,
@@ -51,7 +51,7 @@ namespace DotnetCIVersionProperties.Tests {
 </Project>
 ";
 			AssertWrite(
-					assemblyFileVersion: new Version( 10, 6, 8 ),
+					versionPrefix: new Version( 10, 6, 8 ),
 					branch: "master",
 					tag: string.Empty,
 					build: 93,
@@ -77,7 +77,7 @@ namespace DotnetCIVersionProperties.Tests {
 </Project>
 ";
 			AssertWrite(
-					assemblyFileVersion: new Version( 10, 6, 8 ),
+					versionPrefix: new Version( 10, 6, 8 ),
 					branch: "master",
 					tag: "v10.6.8",
 					build: 93,
@@ -87,7 +87,7 @@ namespace DotnetCIVersionProperties.Tests {
 		}
 
 		private static void AssertWrite(
-				Version assemblyFileVersion,
+				Version versionPrefix,
 				string branch,
 				string tag,
 				int build,
@@ -101,7 +101,9 @@ namespace DotnetCIVersionProperties.Tests {
 
 				ProjectVersionPropsWriter.Write(
 						output: strW,
-						assemblyFileVersion: assemblyFileVersion,
+						major: versionPrefix.Major,
+						minor: versionPrefix.Minor,
+						patch: versionPrefix.Build,
 						branch: branch,
 						tag: tag,
 						build: build,
