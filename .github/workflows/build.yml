@@ -33,7 +33,7 @@ jobs:
             run: src/CIVersionPropsWriter/bin/Release/netcoreapp3.1/CIVersionPropsWriter.exe --output VersionInfo.props
 
           - name: Rebuild
-            run: dotnet build CIVersionPropsWriter.sln --configuration Release
+            run: dotnet build CIVersionPropsWriter.sln -target:Rebuild --configuration Release
 
           - name: Copy *.nuget to dist/
             run: mkdir dist/ && cp src/CIVersionPropsWriter/bin/Release/*.nupkg dist/
