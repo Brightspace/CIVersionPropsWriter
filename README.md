@@ -1,6 +1,6 @@
-# CIVersionPropsWriter
+# dotnet-ci-version-properties
 
-Utility for generating Microsoft.NET.Sdk project version properties.
+.NET Core tool for generating project version properties from a CI environment.
 
 Versioning:
 
