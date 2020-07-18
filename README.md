@@ -41,13 +41,14 @@ Versioning:
 Setup environment variable:
 
 ```
-ASSEMBLY_FILE_VERSION: "0.1.0"
+VERSION_PREFIX: "0.1.0"
 ```
 
 Overwrite `VersionInfo.props`
 
 ```
-DotnetCIVersionProperties.exe --output VersionInfo.props
+dotnet tool install --global dotnet-ci-version-properties
+dotnet ci-version-properties --output VersionInfo.props
 ```
 
 ## Sample Output
