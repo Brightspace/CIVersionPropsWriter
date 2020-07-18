@@ -4,6 +4,7 @@
 		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
 		<BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
 		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
+		<Description>Utility for generated Microsoft.NET.Sdk project version properties.</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 		<OutputType>Exe</OutputType>
