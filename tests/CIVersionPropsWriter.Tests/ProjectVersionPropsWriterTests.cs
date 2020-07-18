@@ -15,6 +15,7 @@ namespace CIVersionPropsWriter.Tests {
 	<PropertyGroup>
 		<VersionPrefix>10.6.8</VersionPrefix>
 		<VersionSuffix>alpha93</VersionSuffix>
+		<Version>10.6.8-alpha93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 	</PropertyGroup>
@@ -36,6 +37,7 @@ namespace CIVersionPropsWriter.Tests {
 	<PropertyGroup>
 		<VersionPrefix>10.6.8</VersionPrefix>
 		<VersionSuffix>rc93</VersionSuffix>
+		<Version>10.6.8-rc93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 	</PropertyGroup>
@@ -57,6 +59,7 @@ namespace CIVersionPropsWriter.Tests {
 	<PropertyGroup>
 		<VersionPrefix>10.6.8</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
+		<Version>10.6.8</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 	</PropertyGroup>

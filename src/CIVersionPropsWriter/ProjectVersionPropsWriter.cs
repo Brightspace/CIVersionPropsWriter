@@ -32,6 +32,13 @@ namespace CIVersionPropsWriter {
 			output.WriteLine( "\t<PropertyGroup>" );
 			output.WriteLine( $"\t\t<VersionPrefix>{ major }.{ minor }.{ patch }</VersionPrefix>" );
 			output.WriteLine( $"\t\t<VersionSuffix>{ suffix }</VersionSuffix>" );
+
+			if( suffix.Length > 0 ) {
+				output.WriteLine( $"\t\t<Version>{ major }.{ minor }.{ patch }-{ suffix }</Version>" );
+			} else {
+				output.WriteLine( $"\t\t<Version>{ major }.{ minor }.{ patch }</Version>" );
+			}
+
 			output.WriteLine( $"\t\t<AssemblyVersion>{ major }.{ minor }.0.0</AssemblyVersion>" );
 			output.WriteLine( $"\t\t<FileVersion>{ major }.{ minor }.{ patch }.{ build }</FileVersion>" );
 			output.WriteLine( "\t</PropertyGroup>" );
