@@ -1,6 +1,6 @@
 # CIVersionPropsWriter
 
-Utility for generated Microsoft.NET.Sdk project version properties.
+Utility for generating Microsoft.NET.Sdk project version properties.
 
 Versioning:
 

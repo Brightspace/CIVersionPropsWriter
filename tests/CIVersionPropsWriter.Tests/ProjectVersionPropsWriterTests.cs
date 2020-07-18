@@ -19,6 +19,7 @@ namespace CIVersionPropsWriter.Tests {
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 		<InformationalVersion>10.6.8-alpha93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryBranch>feature/test</RepositoryBranch>
 		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>
@@ -44,6 +45,7 @@ namespace CIVersionPropsWriter.Tests {
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 		<InformationalVersion>10.6.8-rc93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryBranch>master</RepositoryBranch>
 		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>
@@ -69,6 +71,7 @@ namespace CIVersionPropsWriter.Tests {
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
 		<InformationalVersion>10.6.8+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryBranch>master</RepositoryBranch>
 		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>

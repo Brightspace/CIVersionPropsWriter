@@ -48,6 +48,7 @@ namespace CIVersionPropsWriter {
 			output.WriteLine( $"\t\t<AssemblyVersion>{ assemblyVersion }</AssemblyVersion>" );
 			output.WriteLine( $"\t\t<FileVersion>{ fileVersion }</FileVersion>" );
 			output.WriteLine( $"\t\t<InformationalVersion>{ informationalVersion }</InformationalVersion>" );
+			output.WriteLine( $"\t\t<RepositoryBranch>{ branch }</RepositoryBranch>" );
 			output.WriteLine( $"\t\t<RepositoryCommit>{ sha1 }</RepositoryCommit>" );
 			output.WriteLine( "\t</PropertyGroup>" );
 			output.WriteLine( "</Project>" );
