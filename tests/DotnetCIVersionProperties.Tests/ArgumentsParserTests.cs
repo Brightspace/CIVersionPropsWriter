@@ -31,7 +31,7 @@ namespace DotnetCIVersionProperties.Tests {
 		}
 
 		[TestCaseSource( nameof( VendorEnvironmentVariableTestCases ) )]
-		public void AssemblyFileVersionArg(
+		public void VersionPrefixArg(
 				string branchVariable,
 				string tagVariable,
 				string buildNumberVariable,
@@ -160,14 +160,14 @@ namespace DotnetCIVersionProperties.Tests {
 
 		private static IEnumerable<InvalidArgsTestCase> InvalidArgumentsTestCases() {
 
-			Func<string, string> withAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
+			Func<string, string> withVersionPrefix = MockEnvironment( new Dictionary<string, string> {
 				{ ArgumentsParser.VersionPrefixVariable, "10.6.9" },
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
 				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 			} );
 
-			Func<string, string> withoutAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
+			Func<string, string> withoutVersionPrefix = MockEnvironment( new Dictionary<string, string> {
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
 				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
 				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
@@ -175,7 +175,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "NoArguments",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: Array.Empty<string>(),
 					expectedResult: ArgumentsParser.ParseResult.NoArguments,
 					expectedErrors: Usage
@@ -183,7 +183,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "ExtraArguments - Before",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--random", "--output", "out.props" },
 					expectedResult: ArgumentsParser.ParseResult.ExtraArguments,
 					expectedErrors: "Invalid arguments: --random\r\n\r\n" + Usage
@@ -191,7 +191,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "ExtraArguments - After",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--random" },
 					expectedResult: ArgumentsParser.ParseResult.ExtraArguments,
 					expectedErrors: "Invalid arguments: --random\r\n\r\n" + Usage
@@ -199,7 +199,7 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "MissingOutputPath",
-					environment: withoutAssemblyFileVersion,
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--versionPrefix", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingOutputPath,
 					expectedErrors: "Invalid arguments: output path not specified\r\n\r\n" + Usage
@@ -207,38 +207,38 @@ namespace DotnetCIVersionProperties.Tests {
 
 			yield return new InvalidArgsTestCase(
 					name: "IncompleteOutputPath",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output" },
 					expectedResult: ArgumentsParser.ParseResult.MissingOutputPath,
 					expectedErrors: "Invalid arguments: output path not specified\r\n\r\n" + Usage
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "MissingAssemblyFileVersion",
-					environment: withoutAssemblyFileVersion,
+					name: "MissingVersionPrefix",
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props" },
-					expectedResult: ArgumentsParser.ParseResult.MissingAssemblyFileVersion,
+					expectedResult: ArgumentsParser.ParseResult.MissingVersionPrefix,
 					expectedErrors: "VERSION_PREFIX environment variable not set\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "IncompleteAssemblyFileVersion",
-					environment: withoutAssemblyFileVersion,
+					name: "IncompleteVersionPrefix",
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--versionPrefix" },
-					expectedResult: ArgumentsParser.ParseResult.MissingAssemblyFileVersion,
+					expectedResult: ArgumentsParser.ParseResult.MissingVersionPrefix,
 					expectedErrors: "VERSION_PREFIX environment variable not set\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Command Line",
-					environment: withoutAssemblyFileVersion,
+					name: "InvalidVersionPrefix - Command Line",
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--versionPrefix", "junk" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
 					expectedErrors: "Invalid assembly file version: junk\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Environment",
+					name: "InvalidVersionPrefix - Environment",
 					environment: MockEnvironment( new Dictionary<string, string> {
 						{ ArgumentsParser.VersionPrefixVariable, "Junk" },
 						{ Vendors.GithubActions.BuildNumberVariable, "3433" },
@@ -246,22 +246,22 @@ namespace DotnetCIVersionProperties.Tests {
 						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
 					expectedErrors: "Invalid VERSION_PREFIX value: Junk\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
-					name: "InvalidAssemblyFileVersion - Revision",
-					environment: withoutAssemblyFileVersion,
+					name: "InvalidVersionPrefix - Revision",
+					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3.4" },
-					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
+					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
 					expectedErrors: "Assembly file version must be in the format MAJOR.MINOR.PATCH\r\n"
 				);
 
 
 			yield return new InvalidArgsTestCase(
 					name: "InvalidOutputPath",
-					environment: withAssemblyFileVersion,
+					environment: withVersionPrefix,
 					arguments: new[] { "--output", "  " },
 					expectedResult: ArgumentsParser.ParseResult.InvalidOutputPath,
 					expectedErrors: "Invalid output path:   \r\n"

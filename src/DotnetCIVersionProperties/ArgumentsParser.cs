@@ -47,12 +47,12 @@ namespace DotnetCIVersionProperties {
 			ExtraArguments = 2,
 
 			MissingOutputPath = 10,
-			MissingAssemblyFileVersion = 11,
+			MissingVersionPrefix = 11,
 			MissingBuildNumber = 12,
 			MissingBranch = 13,
 			MissingSha1 = 14,
 
-			InvalidAssemblyFileVersion = 20,
+			InvalidVersionPrefix = 20,
 			InvalidOutputPath = 21,
 			InvalidBuildNumber = 22
 		}
@@ -67,7 +67,7 @@ namespace DotnetCIVersionProperties {
 			args = null;
 
 			FileInfo outputPath = null;
-			Version assemblyFileVersion = null;
+			Version versionPrefix = null;
 			List<string> extra = new List<string>();
 
 			if( arguments.Length == 0 ) {
@@ -88,10 +88,10 @@ namespace DotnetCIVersionProperties {
 							}
 
 							string argValue = arguments[ ++index ];
-							if( !Version.TryParse( argValue, out assemblyFileVersion ) ) {
+							if( !Version.TryParse( argValue, out versionPrefix ) ) {
 
 								errors.WriteLine( "Invalid assembly file version: {0}", argValue );
-								return ParseResult.InvalidAssemblyFileVersion;
+								return ParseResult.InvalidVersionPrefix;
 							}
 
 							break;
@@ -137,29 +137,29 @@ namespace DotnetCIVersionProperties {
 				return ParseResult.MissingOutputPath;
 			}
 
-			if( assemblyFileVersion == null ) {
+			if( versionPrefix == null ) {
 
 				string afv = environment( VersionPrefixVariable );
 				if( string.IsNullOrEmpty( afv ) ) {
 
 					errors.WriteLine( $"{ VersionPrefixVariable } environment variable not set" );
-					return ParseResult.MissingAssemblyFileVersion;
+					return ParseResult.MissingVersionPrefix;
 				}
 
-				if( !Version.TryParse( afv, out assemblyFileVersion ) ) {
+				if( !Version.TryParse( afv, out versionPrefix ) ) {
 
 					errors.WriteLine( $"Invalid { VersionPrefixVariable } value: { afv }" );
-					return ParseResult.InvalidAssemblyFileVersion;
+					return ParseResult.InvalidVersionPrefix;
 				}
 			}
 
-			if( assemblyFileVersion.Major == -1
-				|| assemblyFileVersion.Minor == -1
-				|| assemblyFileVersion.Build == -1
-				|| assemblyFileVersion.Revision != -1 ) {
+			if( versionPrefix.Major == -1
+				|| versionPrefix.Minor == -1
+				|| versionPrefix.Build == -1
+				|| versionPrefix.Revision != -1 ) {
 
 				errors.WriteLine( $"Assembly file version must be in the format MAJOR.MINOR.PATCH" );
-				return ParseResult.InvalidAssemblyFileVersion;
+				return ParseResult.InvalidVersionPrefix;
 			}
 
 			int buildNumber;
@@ -195,7 +195,7 @@ namespace DotnetCIVersionProperties {
 
 			args = new Arguments(
 					output: outputPath,
-					versionPrefix: assemblyFileVersion,
+					versionPrefix: versionPrefix,
 					branch: branch,
 					tag: tag,
 					build: buildNumber,
