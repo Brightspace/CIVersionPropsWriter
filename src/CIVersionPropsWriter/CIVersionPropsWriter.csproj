@@ -2,14 +2,14 @@
 	<PropertyGroup>
 		<Authors>Jeff Ashton</Authors>
 		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
-		<Description>Utility for generating Microsoft.NET.Sdk project version properties.</Description>
+		<Description>.NET Core tool for generating project version properties from a CI environment.</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 		<OutputType>Exe</OutputType>
 		<PackAsTool>true</PackAsTool>
 		<Packageid>dotnet-ci-version-properties</PackageId>
 		<PackageProjectUrl>https://github.com/Brightspace/dotnet-ci-version-properties</PackageProjectUrl>
-		<PackageTags>ci;version</PackageTags>
+		<PackageTags>ci;dotnet;version</PackageTags>
 		<RepositoryUrl>https://github.com/Brightspace/dotnet-ci-version-properties</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
