@@ -16,7 +16,9 @@ Versioning:
 
 ## Usage
 
-### In your `Directory.Build.props`:
+### In your repository
+
+`Directory.Build.props`:
 
 ```
 <Project>
@@ -24,7 +26,7 @@ Versioning:
 </Project>
 ```
 
-With a developer file:
+`VersionInfo.props`:
 
 ```
 <Project>
@@ -39,10 +41,10 @@ With a developer file:
 Setup environment variable:
 
 ```
-  ASSEMBLY_FILE_VERSION: "0.1.0"
+ASSEMBLY_FILE_VERSION: "0.1.0"
 ```
 
-Generate the VersionInfo.props
+Overwrite `VersionInfo.props`
 
 ```
 CIVersionPropsWriter.exe --output VersionInfo.props
@@ -54,12 +56,13 @@ CIVersionPropsWriter.exe --output VersionInfo.props
 <Project>
 	<PropertyGroup>
 		<VersionPrefix>0.1.0</VersionPrefix>
-		<VersionSuffix>alpha11</VersionSuffix>
-		<Version>0.1.0-alpha11</Version>
+		<VersionSuffix>alpha13</VersionSuffix>
+		<Version>0.1.0-alpha13</Version>
 		<AssemblyVersion>0.1.0.0</AssemblyVersion>
-		<FileVersion>0.1.0.11</FileVersion>
-		<InformationalVersion>0.1.0-alpha11+e7b8589f8b075430c4ad2a0b649c3117c2c7e9eb</InformationalVersion>
-		<RepositoryCommit>e7b8589f8b075430c4ad2a0b649c3117c2c7e9eb</RepositoryCommit>
+		<FileVersion>0.1.0.13</FileVersion>
+		<InformationalVersion>0.1.0-alpha13+e3081f392c6af1b5f6c842afa8972c0e27bdb6ef</InformationalVersion>
+		<RepositoryBranch>feature/xyz/RepositoryBranch>
+		<RepositoryCommit>e3081f392c6af1b5f6c842afa8972c0e27bdb6ef</RepositoryCommit>
 	</PropertyGroup>
 </Project>
 ```
