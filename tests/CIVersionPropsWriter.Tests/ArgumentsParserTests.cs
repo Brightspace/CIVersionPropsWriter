@@ -17,14 +17,16 @@ namespace CIVersionPropsWriter.Tests {
 					testCaseName: "AppVeyor",
 					branchVariable: Vendors.AppVeyor.BranchVariable,
 					tagVariable: Vendors.AppVeyor.TagVariable,
-					buildNumberVariable: Vendors.AppVeyor.BuildNumberVariable
+					buildNumberVariable: Vendors.AppVeyor.BuildNumberVariable,
+					sha1Variable: Vendors.AppVeyor.Sha1Variable
 				);
 
 			yield return new EnvironmentVariablesTestCase(
 					testCaseName: "CircleCi",
 					branchVariable: Vendors.CircleCi.BranchVariable,
 					tagVariable: Vendors.CircleCi.TagVariable,
-					buildNumberVariable: Vendors.CircleCi.BuildNumberVariable
+					buildNumberVariable: Vendors.CircleCi.BuildNumberVariable,
+					sha1Variable: Vendors.CircleCi.Sha1Variable
 				);
 		}
 
@@ -32,13 +34,15 @@ namespace CIVersionPropsWriter.Tests {
 		public void AssemblyFileVersionArg(
 				string branchVariable,
 				string tagVariable,
-				string buildNumberVariable
+				string buildNumberVariable,
+				string sha1Variable
 			) {
 
 			Func<string, string> env = MockEnvironment( new Dictionary<string, string> {
 				{ branchVariable, "master" },
 				{ tagVariable, "tagger" },
-				{ buildNumberVariable, "3433" }
+				{ buildNumberVariable, "3433" },
+				{ sha1Variable, "6525F2E663E8D223C2F9041FEFDF2DBA6CA70D63" }
 			} );
 
 			string[] arguments = new[] {
@@ -52,6 +56,7 @@ namespace CIVersionPropsWriter.Tests {
 			Assert.That( args.Branch, Is.EqualTo( "master" ) );
 			Assert.That( args.Tag, Is.EqualTo( "tagger" ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
+			Assert.That( args.Sha1, Is.EqualTo( "6525F2E663E8D223C2F9041FEFDF2DBA6CA70D63" ) );
 		}
 
 		[Test]
@@ -59,14 +64,16 @@ namespace CIVersionPropsWriter.Tests {
 		public void EnvironmentVariables(
 				string branchVariable,
 				string tagVariable,
-				string buildNumberVariable
+				string buildNumberVariable,
+				string sha1Variable
 			) {
 
 			Func<string, string> env = MockEnvironment( new Dictionary<string, string> {
 				{ ArgumentsParser.AssemblyFileVersionVariable, "10.6.9" },
 				{ branchVariable, "master" },
 				{ tagVariable, "tagger" },
-				{ buildNumberVariable, "3433" }
+				{ buildNumberVariable, "3433" },
+				{ sha1Variable, "E49512524F47B4138D850C9D9D85972927281DA0" }
 			} );
 
 			string[] arguments = new[] {
@@ -79,6 +86,7 @@ namespace CIVersionPropsWriter.Tests {
 			Assert.That( args.Branch, Is.EqualTo( "master" ) );
 			Assert.That( args.Tag, Is.EqualTo( "tagger" ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
+			Assert.That( args.Sha1, Is.EqualTo( "E49512524F47B4138D850C9D9D85972927281DA0" ) );
 		}
 
 		private sealed class EnvironmentVariablesTestCase : TestCaseData {
@@ -87,9 +95,10 @@ namespace CIVersionPropsWriter.Tests {
 					string testCaseName,
 					string branchVariable,
 					string tagVariable,
-					string buildNumberVariable
+					string buildNumberVariable,
+					string sha1Variable
 				)
-				: base( branchVariable, tagVariable, buildNumberVariable ) {
+				: base( branchVariable, tagVariable, buildNumberVariable, sha1Variable ) {
 
 				SetName( testCaseName );
 			}
@@ -109,7 +118,8 @@ namespace CIVersionPropsWriter.Tests {
 
 			Func<string, string> env = MockEnvironment( new Dictionary<string, string> {
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
-				{ Vendors.GithubActions.RefVariable, gitRef }
+				{ Vendors.GithubActions.RefVariable, gitRef },
+				{ Vendors.GithubActions.Sha1Variable, "8EBF601F8B808C32B8D2FB570C2E0FBDBB388ADD" }
 			} );
 
 			string[] arguments = new[] {
@@ -123,6 +133,7 @@ namespace CIVersionPropsWriter.Tests {
 			Assert.That( args.Branch, Is.EqualTo( expectedBranch ) );
 			Assert.That( args.Tag, Is.EqualTo( expectedTag ) );
 			Assert.That( args.Build, Is.EqualTo( 3433 ) );
+			Assert.That( args.Sha1, Is.EqualTo( "8EBF601F8B808C32B8D2FB570C2E0FBDBB388ADD" ) );
 		}
 
 		private Arguments AssertSuccessfulTryParse(
@@ -152,12 +163,14 @@ namespace CIVersionPropsWriter.Tests {
 			Func<string, string> withAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
 				{ ArgumentsParser.AssemblyFileVersionVariable, "10.6.9" },
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
-				{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
+				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 			} );
 
 			Func<string, string> withoutAssemblyFileVersion = MockEnvironment( new Dictionary<string, string> {
 				{ Vendors.GithubActions.BuildNumberVariable, "3433" },
-				{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+				{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
+				{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 			} );
 
 			yield return new InvalidArgsTestCase(
@@ -229,7 +242,8 @@ namespace CIVersionPropsWriter.Tests {
 					environment: MockEnvironment( new Dictionary<string, string> {
 						{ ArgumentsParser.AssemblyFileVersionVariable, "Junk" },
 						{ Vendors.GithubActions.BuildNumberVariable, "3433" },
-						{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
+						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props" },
 					expectedResult: ArgumentsParser.ParseResult.InvalidAssemblyFileVersion,
@@ -256,7 +270,8 @@ namespace CIVersionPropsWriter.Tests {
 			yield return new InvalidArgsTestCase(
 					name: "MissingBuildNumber",
 					environment: MockEnvironment( new Dictionary<string, string> {
-						{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
+						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingBuildNumber,
@@ -267,7 +282,8 @@ namespace CIVersionPropsWriter.Tests {
 					name: "InvalidBuildNumber",
 					environment: MockEnvironment( new Dictionary<string, string> {
 						{ Vendors.GithubActions.BuildNumberVariable, "junk" },
-						{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+						{ Vendors.GithubActions.RefVariable, "refs/heads/master" },
+						{ Vendors.GithubActions.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.InvalidBuildNumber,
@@ -277,12 +293,23 @@ namespace CIVersionPropsWriter.Tests {
 			yield return new InvalidArgsTestCase(
 					name: "MissingBranch",
 					environment: MockEnvironment( new Dictionary<string, string> {
-						{ Vendors.CircleCi.BuildNumberVariable, "888" }
-
+						{ Vendors.CircleCi.BuildNumberVariable, "888" },
+						{ Vendors.CircleCi.Sha1Variable, "7110EDA4D09E062AA5E4A390B0A572AC0D2C0220" }
 					} ),
 					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingBranch,
 					expectedErrors: "One of [ APPVEYOR_REPO_BRANCH, CIRCLE_BRANCH, GITHUB_REF ] environment variables is required\r\n"
+				);
+
+			yield return new InvalidArgsTestCase(
+					name: "MissingSha1",
+					environment: MockEnvironment( new Dictionary<string, string> {
+						{ Vendors.GithubActions.BuildNumberVariable, "45" },
+						{ Vendors.GithubActions.RefVariable, "refs/heads/master" }
+					} ),
+					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
+					expectedResult: ArgumentsParser.ParseResult.MissingSha1,
+					expectedErrors: "One of [ APPVEYOR_REPO_COMMIT, CIRCLE_SHA1, GITHUB_SHA ] environment variables is required\r\n"
 				);
 		}
 

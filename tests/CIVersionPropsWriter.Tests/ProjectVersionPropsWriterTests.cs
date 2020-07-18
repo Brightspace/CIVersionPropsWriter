@@ -18,6 +18,8 @@ namespace CIVersionPropsWriter.Tests {
 		<Version>10.6.8-alpha93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
+		<InformationalVersion>10.6.8-alpha93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>
 ";
@@ -26,6 +28,7 @@ namespace CIVersionPropsWriter.Tests {
 					branch: "feature/test",
 					tag: string.Empty,
 					build: 93,
+					sha1: "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
 					expectedProps: expectedProps
 				);
 		}
@@ -40,6 +43,8 @@ namespace CIVersionPropsWriter.Tests {
 		<Version>10.6.8-rc93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
+		<InformationalVersion>10.6.8-rc93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>
 ";
@@ -48,6 +53,7 @@ namespace CIVersionPropsWriter.Tests {
 					branch: "master",
 					tag: string.Empty,
 					build: 93,
+					sha1: "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
 					expectedProps: expectedProps
 				);
 		}
@@ -62,6 +68,8 @@ namespace CIVersionPropsWriter.Tests {
 		<Version>10.6.8</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
+		<InformationalVersion>10.6.8+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
 </Project>
 ";
@@ -70,6 +78,7 @@ namespace CIVersionPropsWriter.Tests {
 					branch: "master",
 					tag: "v10.6.8",
 					build: 93,
+					sha1: "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
 					expectedProps: expectedProps
 				);
 		}
@@ -79,6 +88,7 @@ namespace CIVersionPropsWriter.Tests {
 				string branch,
 				string tag,
 				int build,
+				string sha1,
 				string expectedProps
 			) {
 
@@ -91,7 +101,8 @@ namespace CIVersionPropsWriter.Tests {
 						assemblyFileVersion: assemblyFileVersion,
 						branch: branch,
 						tag: tag,
-						build: build
+						build: build,
+						sha1: sha1
 					);
 			}
 

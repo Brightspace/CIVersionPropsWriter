@@ -33,6 +33,13 @@ namespace CIVersionPropsWriter {
 				{ Vendors.GithubActions.RefVariable, GitTagRefParser }
 			};
 
+		private static readonly IReadOnlyDictionary<string, EnvironmentValueParser> Sha1Variables =
+			new SortedDictionary<string, EnvironmentValueParser> {
+				{ Vendors.AppVeyor.Sha1Variable, NonWhiteSpaceParser },
+				{ Vendors.CircleCi.Sha1Variable, NonWhiteSpaceParser },
+				{ Vendors.GithubActions.Sha1Variable, NonWhiteSpaceParser }
+			};
+
 		public enum ParseResult {
 
 			Success = 0,
@@ -43,6 +50,7 @@ namespace CIVersionPropsWriter {
 			MissingAssemblyFileVersion = 11,
 			MissingBuildNumber = 12,
 			MissingBranch = 13,
+			MissingSha1 = 14,
 
 			InvalidAssemblyFileVersion = 20,
 			InvalidOutputPath = 21,
@@ -179,13 +187,20 @@ namespace CIVersionPropsWriter {
 				tag = string.Empty;
 			}
 
-			args = new Arguments {
-				Output = outputPath,
-				AssemblyFileVersion = assemblyFileVersion,
-				Branch = branch,
-				Tag = tag,
-				Build = buildNumber
-			};
+			if( !TryGetFirstVariable( environment, Sha1Variables, out string _, out string sha1 ) ) {
+
+				WriteMissingEnvironmentVariables( errors, Sha1Variables );
+				return ParseResult.MissingSha1;
+			}
+
+			args = new Arguments(
+					output: outputPath,
+					assemblyFileVersion: assemblyFileVersion,
+					branch: branch,
+					tag: tag,
+					build: buildNumber,
+					sha1: sha1
+				);
 
 			return ParseResult.Success;
 		}

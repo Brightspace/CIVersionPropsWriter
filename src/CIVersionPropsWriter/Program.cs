@@ -25,7 +25,8 @@ namespace CIVersionPropsWriter {
 						assemblyFileVersion: args.AssemblyFileVersion,
 						branch: args.Branch,
 						tag: args.Tag,
-						build: args.Build
+						build: args.Build,
+						sha1: args.Sha1
 					);
 			}
 
