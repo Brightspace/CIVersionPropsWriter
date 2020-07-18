@@ -7,7 +7,7 @@ namespace DotnetCIVersionProperties {
 
 	internal static class ArgumentsParser {
 
-		internal const string Usage = "Usage: dotnet ci-version-properties --output <path> [--version <version>]";
+		internal const string Usage = "Usage: dotnet ci-version-properties --output <path> [--versionPrefix <major.minor.patch>]";
 		internal const string VersionPrefixVariable = "VERSION_PREFIX";
 
 		private delegate bool EnvironmentValueParser( string value, out string parsed );
@@ -158,7 +158,7 @@ namespace DotnetCIVersionProperties {
 				|| versionPrefix.Build == -1
 				|| versionPrefix.Revision != -1 ) {
 
-				errors.WriteLine( $"Assembly file version must be in the format MAJOR.MINOR.PATCH" );
+				errors.WriteLine( "Assembly file version must be in the format \"major.minor.patch\"" );
 				return ParseResult.InvalidVersionPrefix;
 			}
 

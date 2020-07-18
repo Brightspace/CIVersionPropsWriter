@@ -255,7 +255,7 @@ namespace DotnetCIVersionProperties.Tests {
 					environment: withoutVersionPrefix,
 					arguments: new[] { "--output", "out.props", "--versionPrefix", "1.2.3.4" },
 					expectedResult: ArgumentsParser.ParseResult.InvalidVersionPrefix,
-					expectedErrors: "Assembly file version must be in the format MAJOR.MINOR.PATCH\r\n"
+					expectedErrors: "Assembly file version must be in the format \"major.minor.patch\"\r\n"
 				);
 
 
