@@ -1,0 +1,45 @@
+name: build
+on: [push]
+
+env:
+  ASSEMBLY_FILE_VERSION: "0.1.0"
+
+jobs:
+    build:
+        runs-on: windows-latest
+
+        steps:
+
+          - uses: Brightspace/third-party-actions@actions/checkout
+
+          - name: Setup .NET Core
+            uses:  Brightspace/third-party-actions@actions/setup-dotnet
+            with:
+                dotnet-version: 3.0.100
+
+          - name: Restore
+            run: dotnet restore CIVersionPropsWriter.sln
+
+          - name: Build
+            run: dotnet build CIVersionPropsWriter.sln --configuration Release
+
+          - name: Test
+            run: dotnet test CIVersionPropsWriter.sln --configuration Release
+
+          - name: Clean
+            run: rm src/CIVersionPropsWriter/bin/Release/*.nupkg
+
+          - name: Version
+            run: src/CIVersionPropsWriter/bin/Release/netcoreapp3.1/CIVersionPropsWriter.exe --output VersionInfo.props && cat VersionInfo.props
+
+          - name: Rebuild
+            run: dotnet build CIVersionPropsWriter.sln -target:Rebuild --configuration Release
+
+          - name: Copy *.nuget to dist/
+            run: mkdir dist/ && cp src/CIVersionPropsWriter/bin/Release/*.nupkg dist/
+
+          - name: Archive dist/
+            uses: actions/upload-artifact@v1
+            with:
+                name: dist
+                path: dist/

@@ -1,0 +1,15 @@
+.artifacts/
+.generated/
+bin/
+docs/
+obj/
+packages/
+.vs/
+*.exe
+*.dll
+*.jar
+*.suo
+*.war
+*.user
+_ReSharper.*
+*.DotSettings
