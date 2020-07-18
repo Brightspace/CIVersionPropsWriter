@@ -1,6 +1,6 @@
 # dotnet-ci-version-properties
 
-.NET Core tool for generating project version properties from a CI environment.
+.NET Core tool for generating project version properties within a CI environment.
 
 Versioning:
 

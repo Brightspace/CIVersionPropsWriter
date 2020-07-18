@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<Authors>Jeff Ashton</Authors>
 		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
-		<Description>.NET Core tool for generating project version properties from a CI environment.</Description>
+		<Description>.NET Core tool for generating project version properties within a CI environment.</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 		<OutputType>Exe</OutputType>
