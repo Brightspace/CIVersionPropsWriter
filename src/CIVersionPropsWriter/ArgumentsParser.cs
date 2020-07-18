@@ -1,0 +1,265 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+
+namespace CIVersionPropsWriter {
+
+	internal static class ArgumentsParser {
+
+		internal const string Usage = "Usage: CIVersionPropsWriter.exe --output <path> [--assemblyFileVersion <version>]";
+		internal const string AssemblyFileVersionVariable = "ASSEMBLY_FILE_VERSION";
+
+		private delegate bool EnvironmentValueParser( string value, out string parsed );
+
+		private static readonly IReadOnlyDictionary<string, EnvironmentValueParser> BuildNumberVariables =
+			new SortedDictionary<string, EnvironmentValueParser> {
+				{ Vendors.AppVeyor.BuildNumberVariable, NonWhiteSpaceParser },
+				{ Vendors.CircleCi.BuildNumberVariable, NonWhiteSpaceParser },
+				{ Vendors.GithubActions.BuildNumberVariable, NonWhiteSpaceParser }
+			};
+
+		private static readonly IReadOnlyDictionary<string, EnvironmentValueParser> BranchVariables =
+			new SortedDictionary<string, EnvironmentValueParser> {
+				{ Vendors.AppVeyor.BranchVariable, NonWhiteSpaceParser },
+				{ Vendors.CircleCi.BranchVariable, NonWhiteSpaceParser },
+				{ Vendors.GithubActions.RefVariable, GitBranchRefParser }
+			};
+
+		private static readonly IReadOnlyDictionary<string, EnvironmentValueParser> TagVariables =
+			new SortedDictionary<string, EnvironmentValueParser> {
+				{ Vendors.AppVeyor.TagVariable, NonWhiteSpaceParser },
+				{ Vendors.CircleCi.TagVariable, NonWhiteSpaceParser },
+				{ Vendors.GithubActions.RefVariable, GitTagRefParser }
+			};
+
+		public enum ParseResult {
+
+			Success = 0,
+			NoArguments = 1,
+			ExtraArguments = 2,
+
+			MissingOutputPath = 10,
+			MissingAssemblyFileVersion = 11,
+			MissingBuildNumber = 12,
+			MissingBranch = 13,
+
+			InvalidAssemblyFileVersion = 20,
+			InvalidOutputPath = 21,
+			InvalidBuildNumber = 22
+		}
+
+		internal static ParseResult TryParse(
+				Func<string, string> environment,
+				string[] arguments,
+				TextWriter errors,
+				out Arguments args
+			) {
+
+			args = null;
+
+			FileInfo outputPath = null;
+			Version assemblyFileVersion = null;
+			List<string> extra = new List<string>();
+
+			if( arguments.Length == 0 ) {
+				errors.WriteLine( Usage );
+				return ParseResult.NoArguments;
+			}
+
+			int index = 0;
+			while( index < arguments.Length ) {
+
+				string arg = arguments[ index ];
+				switch( arg ) {
+
+					case "--assemblyFileVersion": {
+
+							if( index + 1 == arguments.Length ) {
+								break;
+							}
+
+							string argValue = arguments[ ++index ];
+							if( !Version.TryParse( argValue, out assemblyFileVersion ) ) {
+
+								errors.WriteLine( "Invalid assembly file version: {0}", argValue );
+								return ParseResult.InvalidAssemblyFileVersion;
+							}
+
+							break;
+						}
+
+					case "--output": {
+
+							if( index + 1 == arguments.Length ) {
+								break;
+							}
+
+							string argValue = arguments[ ++index ];
+							try {
+								outputPath = new FileInfo( argValue );
+							} catch {
+								errors.WriteLine( "Invalid output path: {0}", argValue );
+								return ParseResult.InvalidOutputPath;
+							}
+
+							break;
+						}
+
+					default:
+						extra.Add( arg );
+						break;
+				}
+
+				index++;
+			}
+
+			if( extra.Count > 0 ) {
+				errors.WriteLine( "Invalid arguments: {0}", string.Join( " ", extra ) );
+				errors.WriteLine();
+				errors.WriteLine( Usage );
+				return ParseResult.ExtraArguments;
+			}
+
+			if( outputPath == null ) {
+
+				errors.WriteLine( "Invalid arguments: output path not specified" );
+				errors.WriteLine();
+				errors.WriteLine( Usage );
+				return ParseResult.MissingOutputPath;
+			}
+
+			if( assemblyFileVersion == null ) {
+
+				string afv = environment( AssemblyFileVersionVariable );
+				if( string.IsNullOrEmpty( afv ) ) {
+
+					errors.WriteLine( $"{ AssemblyFileVersionVariable } environment variable not set" );
+					return ParseResult.MissingAssemblyFileVersion;
+				}
+
+				if( !Version.TryParse( afv, out assemblyFileVersion ) ) {
+
+					errors.WriteLine( $"Invalid { AssemblyFileVersionVariable } value: { afv }" );
+					return ParseResult.InvalidAssemblyFileVersion;
+				}
+			}
+
+			if( assemblyFileVersion.Major == -1
+				|| assemblyFileVersion.Minor == -1
+				|| assemblyFileVersion.Build == -1
+				|| assemblyFileVersion.Revision != -1 ) {
+
+				errors.WriteLine( $"Assembly file version must be in the format MAJOR.MINOR.PATCH" );
+				return ParseResult.InvalidAssemblyFileVersion;
+			}
+
+			int buildNumber;
+			{
+				if( !TryGetFirstVariable( environment, BuildNumberVariables, out string bnVariable, out string bn ) ) {
+
+					WriteMissingEnvironmentVariables( errors, BuildNumberVariables );
+					return ParseResult.MissingBuildNumber;
+				}
+
+				if( !int.TryParse( bn, out buildNumber ) ) {
+
+					errors.WriteLine( $"Invalid { bnVariable } value: { bn }" );
+					return ParseResult.InvalidBuildNumber;
+				}
+			}
+
+			if( !TryGetFirstVariable( environment, BranchVariables, out string branchVariable, out string branch ) ) {
+
+				WriteMissingEnvironmentVariables( errors, BranchVariables );
+				return ParseResult.MissingBranch;
+			}
+
+			if( !TryGetFirstVariable( environment, TagVariables, out string _, out string tag ) ) {
+				tag = string.Empty;
+			}
+
+			args = new Arguments {
+				Output = outputPath,
+				AssemblyFileVersion = assemblyFileVersion,
+				Branch = branch,
+				Tag = tag,
+				Build = buildNumber
+			};
+
+			return ParseResult.Success;
+		}
+
+		private static void WriteMissingEnvironmentVariables(
+				TextWriter errors,
+				IReadOnlyDictionary<string, EnvironmentValueParser> definitions
+			) {
+
+			string names = string.Join( ", ", definitions.Keys );
+			errors.WriteLine( $"One of [ { names } ] environment variables is required" );
+		}
+
+		private static bool TryGetFirstVariable(
+				Func<string, string> environment,
+				IReadOnlyDictionary<string, EnvironmentValueParser> definitions,
+				out string variable,
+				out string value
+			) {
+
+			foreach( KeyValuePair<string, EnvironmentValueParser> definition in definitions ) {
+
+				string raw = environment( definition.Key );
+				if( raw == null ) {
+					continue;
+				}
+
+				if( definition.Value( raw, out string parsed ) ) {
+
+					variable = definition.Key;
+					value = parsed;
+					return true;
+				}
+			}
+
+			variable = null;
+			value = null;
+			return false;
+		}
+
+		private static bool NonWhiteSpaceParser( string value, out string parsed ) {
+
+			if( !string.IsNullOrWhiteSpace( value ) ) {
+				parsed = value;
+				return true;
+			}
+
+			parsed = null;
+			return false;
+		}
+
+		private static bool GitBranchRefParser( string value, out string branch ) {
+
+			Match m = Regex.Match( value, "^refs/heads/(.+)" );
+			if( m.Success ) {
+				branch = m.Groups[ 1 ].Value;
+			} else {
+				branch = string.Empty;
+			}
+
+			return true;
+		}
+
+		private static bool GitTagRefParser( string value, out string tag ) {
+
+			Match m = Regex.Match( value, "^refs/tags/(.+)" );
+			if( m.Success ) {
+				tag = m.Groups[ 1 ].Value;
+			} else {
+				tag = string.Empty;
+			}
+
+			return true;
+		}
+
+	}
+}

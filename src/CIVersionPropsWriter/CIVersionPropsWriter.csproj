@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+		<BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+		<OutputType>Exe</OutputType>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Brightspace/CIVersionPropsWriter</PackageProjectUrl>
+		<RepositoryUrl>git@github.com:Brightspace/CIVersionPropsWriter.git</RepositoryUrl>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+		<TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
