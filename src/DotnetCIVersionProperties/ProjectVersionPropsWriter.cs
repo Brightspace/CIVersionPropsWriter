@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace CIVersionPropsWriter {
+namespace DotnetCIVersionProperties {
 
 	public static class ProjectVersionPropsWriter {
 

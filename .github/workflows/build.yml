@@ -18,25 +18,25 @@ jobs:
                 dotnet-version: 3.0.100
 
           - name: Restore
-            run: dotnet restore CIVersionPropsWriter.sln
+            run: dotnet restore DotnetCIVersionProperties.sln
 
           - name: Build
-            run: dotnet build CIVersionPropsWriter.sln --configuration Release
+            run: dotnet build DotnetCIVersionProperties.sln --configuration Release
 
           - name: Test
-            run: dotnet test CIVersionPropsWriter.sln --configuration Release
+            run: dotnet test DotnetCIVersionProperties.sln --configuration Release
 
           - name: Clean
-            run: rm src/CIVersionPropsWriter/bin/Release/*.nupkg
+            run: rm src/DotnetCIVersionProperties/bin/Release/*.nupkg
 
           - name: Version
-            run: src/CIVersionPropsWriter/bin/Release/netcoreapp3.1/CIVersionPropsWriter.exe --output VersionInfo.props && cat VersionInfo.props
+            run: src/DotnetCIVersionProperties/bin/Release/netcoreapp3.1/DotnetCIVersionProperties.exe --output VersionInfo.props && cat VersionInfo.props
 
           - name: Rebuild
-            run: dotnet build CIVersionPropsWriter.sln -target:Rebuild --configuration Release
+            run: dotnet build DotnetCIVersionProperties.sln -target:Rebuild --configuration Release
 
           - name: Copy *.nuget to dist/
-            run: mkdir dist/ && cp src/CIVersionPropsWriter/bin/Release/*.nupkg dist/
+            run: mkdir dist/ && cp src/DotnetCIVersionProperties/bin/Release/*.nupkg dist/
 
           - name: Archive dist/
             uses: actions/upload-artifact@v1

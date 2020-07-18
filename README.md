@@ -47,7 +47,7 @@ ASSEMBLY_FILE_VERSION: "0.1.0"
 Overwrite `VersionInfo.props`
 
 ```
-CIVersionPropsWriter.exe --output VersionInfo.props
+DotnetCIVersionProperties.exe --output VersionInfo.props
 ```
 
 ## Sample Output

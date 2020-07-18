@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace CIVersionPropsWriter {
+namespace DotnetCIVersionProperties {
 
 	internal static class Program {
 
