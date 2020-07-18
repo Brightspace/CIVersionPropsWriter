@@ -17,22 +17,23 @@ namespace CIVersionPropsWriter {
 			int minor = assemblyFileVersion.Minor;
 			int patch = assemblyFileVersion.Build;
 
-			string package;
+			string suffix;
 			if( tag.Equals( $"v{ major }.{ minor }.{ patch }" ) ) {
-				package = string.Empty;
+				suffix = string.Empty;
 
 			} else if( branch.Equals( "master" ) ) {
-				package = $"-rc{ build }";
+				suffix = $"rc{ build }";
 
 			} else {
-				package = $"-alpha{ build }";
+				suffix = $"alpha{ build }";
 			}
 
 			output.WriteLine( "<Project>" );
 			output.WriteLine( "\t<PropertyGroup>" );
-			output.WriteLine( $"\t\t<Version>{ major }.{ minor }</Version>" );
+			output.WriteLine( $"\t\t<VersionPrefix>{ major }.{ minor }.{ patch }</VersionPrefix>" );
+			output.WriteLine( $"\t\t<VersionSuffix>{ suffix }</VersionSuffix>" );
+			output.WriteLine( $"\t\t<AssemblyVersion>{ major }.{ minor }.0.0</AssemblyVersion>" );
 			output.WriteLine( $"\t\t<FileVersion>{ major }.{ minor }.{ patch }.{ build }</FileVersion>" );
-			output.WriteLine( $"\t\t<InformationalVersion>{ major }.{ minor }.{ patch }{ package }</InformationalVersion>" );
 			output.WriteLine( "\t</PropertyGroup>" );
 			output.WriteLine( "</Project>" );
 		}

@@ -13,9 +13,10 @@ namespace CIVersionPropsWriter.Tests {
 
 			const string expectedProps = @"<Project>
 	<PropertyGroup>
-		<Version>10.6</Version>
+		<VersionPrefix>10.6.8</VersionPrefix>
+		<VersionSuffix>alpha93</VersionSuffix>
+		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
-		<InformationalVersion>10.6.8-alpha93</InformationalVersion>
 	</PropertyGroup>
 </Project>
 ";
@@ -33,9 +34,10 @@ namespace CIVersionPropsWriter.Tests {
 
 			const string expectedProps = @"<Project>
 	<PropertyGroup>
-		<Version>10.6</Version>
+		<VersionPrefix>10.6.8</VersionPrefix>
+		<VersionSuffix>rc93</VersionSuffix>
+		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
-		<InformationalVersion>10.6.8-rc93</InformationalVersion>
 	</PropertyGroup>
 </Project>
 ";
@@ -53,9 +55,10 @@ namespace CIVersionPropsWriter.Tests {
 
 			const string expectedProps = @"<Project>
 	<PropertyGroup>
-		<Version>10.6</Version>
+		<VersionPrefix>10.6.8</VersionPrefix>
+		<VersionSuffix></VersionSuffix>
+		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
-		<InformationalVersion>10.6.8</InformationalVersion>
 	</PropertyGroup>
 </Project>
 ";
