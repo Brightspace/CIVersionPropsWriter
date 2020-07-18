@@ -7,7 +7,7 @@
 		<IsPackable>true</IsPackable>
 		<OutputType>Exe</OutputType>
 		<PackAsTool>true</PackAsTool>
-		<Packageid>dotnet-ci-version-properties</PackageId>
+		<PackageId>dotnet-ci-version-properties</PackageId>
 		<PackageProjectUrl>https://github.com/Brightspace/dotnet-ci-version-properties</PackageProjectUrl>
 		<PackageTags>ci;dotnet;version</PackageTags>
 		<RepositoryUrl>https://github.com/Brightspace/dotnet-ci-version-properties</RepositoryUrl>
