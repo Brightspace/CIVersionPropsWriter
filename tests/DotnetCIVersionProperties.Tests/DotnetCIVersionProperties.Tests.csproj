@@ -10,6 +10,6 @@
 		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\CIVersionPropsWriter\CIVersionPropsWriter.csproj" />
+		<ProjectReference Include="..\..\src\DotnetCIVersionProperties\DotnetCIVersionProperties.csproj" />
 	</ItemGroup>
 </Project>

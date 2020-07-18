@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace CIVersionPropsWriter {
+namespace DotnetCIVersionProperties {
 
 	internal static class ArgumentsParser {
 
-		internal const string Usage = "Usage: CIVersionPropsWriter.exe --output <path> [--assemblyFileVersion <version>]";
+		internal const string Usage = "Usage: DotnetCIVersionProperties.exe --output <path> [--assemblyFileVersion <version>]";
 		internal const string AssemblyFileVersionVariable = "ASSEMBLY_FILE_VERSION";
 
 		private delegate bool EnvironmentValueParser( string value, out string parsed );

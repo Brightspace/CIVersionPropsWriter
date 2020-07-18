@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Authors>D2L</Authors>
+		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
+		<Description>.NET Core tool for generating project version properties within a CI environment.</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+		<OutputType>Exe</OutputType>
+		<PackAsTool>true</PackAsTool>
+		<PackageId>dotnet-ci-version-properties</PackageId>
+		<PackageProjectUrl>https://github.com/Brightspace/dotnet-ci-version-properties</PackageProjectUrl>
+		<PackageTags>ci;dotnet;version</PackageTags>
+		<RepositoryUrl>https://github.com/Brightspace/dotnet-ci-version-properties</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<ToolCommandName>dotnet-ci-version-properties</ToolCommandName>
+	</PropertyGroup>
+</Project>

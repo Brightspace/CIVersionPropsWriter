@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace CIVersionPropsWriter.Tests {
+namespace DotnetCIVersionProperties.Tests {
 
 	[TestFixture]
 	internal sealed class ProjectVersionPropsWriterTests {
