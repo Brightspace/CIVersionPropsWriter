@@ -260,7 +260,7 @@ namespace CIVersionPropsWriter.Tests {
 					} ),
 					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.MissingBuildNumber,
-					expectedErrors: "One of [ APPVEYOR_BUILD_NUMBER, CIRCLE_BUILD_NUM, GITHUB_RUN_ID ] environment variables is required\r\n"
+					expectedErrors: "One of [ APPVEYOR_BUILD_NUMBER, CIRCLE_BUILD_NUM, GITHUB_RUN_NUMBER ] environment variables is required\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(
@@ -271,7 +271,7 @@ namespace CIVersionPropsWriter.Tests {
 					} ),
 					arguments: new[] { "--output", "out.props", "--assemblyFileVersion", "1.2.3" },
 					expectedResult: ArgumentsParser.ParseResult.InvalidBuildNumber,
-					expectedErrors: "Invalid GITHUB_RUN_ID value: junk\r\n"
+					expectedErrors: "Invalid GITHUB_RUN_NUMBER value: junk\r\n"
 				);
 
 			yield return new InvalidArgsTestCase(

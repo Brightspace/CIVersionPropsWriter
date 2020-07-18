@@ -18,7 +18,7 @@
 
 		internal static class GithubActions {
 
-			internal const string BuildNumberVariable = "GITHUB_RUN_ID";
+			internal const string BuildNumberVariable = "GITHUB_RUN_NUMBER";
 			internal const string RefVariable = "GITHUB_REF";
 		}
 	}
