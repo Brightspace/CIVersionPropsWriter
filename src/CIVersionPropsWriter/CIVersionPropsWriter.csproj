@@ -1,23 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
-		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
-		<BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+		<Authors>Jeff Ashton</Authors>
 		<Copyright>Copyright © 2020 D2L Corporation</Copyright>
 		<Description>Utility for generating Microsoft.NET.Sdk project version properties.</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IsPackable>true</IsPackable>
 		<OutputType>Exe</OutputType>
+		<PackAsTool>true</PackAsTool>
 		<PackageProjectUrl>https://github.com/Brightspace/CIVersionPropsWriter</PackageProjectUrl>
+		<PackageTags>ci;version</PackageTags>
 		<RepositoryUrl>https://github.com/Brightspace/CIVersionPropsWriter</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-		<TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<ToolCommandName>dotnet-write-ci-version-properties</ToolCommandName>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-	</ItemGroup>
-
 </Project>
