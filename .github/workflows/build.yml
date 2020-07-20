@@ -2,7 +2,7 @@ name: build
 on: [push]
 
 env:
-  VERSION_PREFIX: "0.2.0"
+  VERSION_PREFIX: "0.3.0"
 
 jobs:
     build:
