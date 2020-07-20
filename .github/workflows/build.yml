@@ -2,7 +2,7 @@ name: build
 on: [push]
 
 env:
-  VERSION_PREFIX: "0.2.0"
+  VERSION_PREFIX: "0.3.0"
 
 jobs:
     build:
@@ -18,13 +18,13 @@ jobs:
                 dotnet-version: 3.0.100
 
           - name: Restore
-            run: dotnet restore DotnetCIVersionProperties.sln
+            run: dotnet restore
 
           - name: Build
-            run: dotnet build DotnetCIVersionProperties.sln --configuration Release
+            run: dotnet build --configuration Release
 
           - name: Test
-            run: dotnet test DotnetCIVersionProperties.sln --configuration Release
+            run: dotnet test --configuration Release --no-build
 
           - name: Clean
             run: rm src/DotnetCIVersionProperties/bin/Release/*.nupkg
@@ -33,7 +33,7 @@ jobs:
             run: src/DotnetCIVersionProperties/bin/Release/netcoreapp3.1/DotnetCIVersionProperties.exe --output VersionInfo.props && cat VersionInfo.props
 
           - name: Rebuild
-            run: dotnet build DotnetCIVersionProperties.sln -target:Rebuild --configuration Release
+            run: dotnet build --configuration Release -target:Rebuild 
 
           - name: Copy *.nuget to dist/
             run: mkdir dist/ && cp src/DotnetCIVersionProperties/bin/Release/*.nupkg dist/

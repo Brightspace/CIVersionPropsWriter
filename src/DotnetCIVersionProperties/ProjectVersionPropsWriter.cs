@@ -23,10 +23,10 @@ namespace DotnetCIVersionProperties {
 				versionSuffix = string.Empty;
 
 			} else if( branch.Equals( "master" ) ) {
-				versionSuffix = $"rc{ build }";
+				versionSuffix = $"rc.{ build }";
 
 			} else {
-				versionSuffix = $"alpha{ build }";
+				versionSuffix = $"alpha.{ build }";
 			}
 
 			string version = versionPrefix;

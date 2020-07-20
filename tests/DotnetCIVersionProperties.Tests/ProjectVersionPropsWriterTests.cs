@@ -14,11 +14,11 @@ namespace DotnetCIVersionProperties.Tests {
 			const string expectedProps = @"<Project>
 	<PropertyGroup>
 		<VersionPrefix>10.6.8</VersionPrefix>
-		<VersionSuffix>alpha93</VersionSuffix>
-		<Version>10.6.8-alpha93</Version>
+		<VersionSuffix>alpha.93</VersionSuffix>
+		<Version>10.6.8-alpha.93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
-		<InformationalVersion>10.6.8-alpha93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<InformationalVersion>10.6.8-alpha.93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
 		<RepositoryBranch>feature/test</RepositoryBranch>
 		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
@@ -40,11 +40,11 @@ namespace DotnetCIVersionProperties.Tests {
 			const string expectedProps = @"<Project>
 	<PropertyGroup>
 		<VersionPrefix>10.6.8</VersionPrefix>
-		<VersionSuffix>rc93</VersionSuffix>
-		<Version>10.6.8-rc93</Version>
+		<VersionSuffix>rc.93</VersionSuffix>
+		<Version>10.6.8-rc.93</Version>
 		<AssemblyVersion>10.6.0.0</AssemblyVersion>
 		<FileVersion>10.6.8.93</FileVersion>
-		<InformationalVersion>10.6.8-rc93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<InformationalVersion>10.6.8-rc.93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
 		<RepositoryBranch>master</RepositoryBranch>
 		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
 	</PropertyGroup>
