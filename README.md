@@ -4,8 +4,8 @@
 
 Versioning:
 
-* Dev Branch => 0.1.0-alpha2
-* Master Branch => 0.1.0-rc3
+* Dev Branch => 0.1.0-alpha.2
+* Master Branch => 0.1.0-rc.3
 * Release tag (v0.1.0) => 0.1.0
 
 ## Support
