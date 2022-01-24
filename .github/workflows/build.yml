@@ -2,7 +2,7 @@ name: build
 on: [push]
 
 env:
-  VERSION_PREFIX: "0.3.1"
+  VERSION_PREFIX: "0.4.0"
 
 jobs:
     build:
@@ -21,6 +21,11 @@ jobs:
             uses:  Brightspace/third-party-actions@actions/setup-dotnet
             with:
                 dotnet-version: 5.0.x
+
+          - name: Setup .NET Core (6.0.x)
+            uses:  Brightspace/third-party-actions@actions/setup-dotnet
+            with:
+                dotnet-version: 6.0.x
 
           - name: Restore
             run: dotnet restore
