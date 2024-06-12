@@ -59,7 +59,31 @@ namespace DotnetCIVersionProperties.Tests {
 					expectedProps: expectedProps
 				);
 		}
+		[Test]
+		public void MainBranch() {
 
+			const string expectedProps = @"<Project>
+	<PropertyGroup>
+		<VersionPrefix>10.6.8</VersionPrefix>
+		<VersionSuffix>rc.93</VersionSuffix>
+		<Version>10.6.8-rc.93</Version>
+		<AssemblyVersion>10.6.0.0</AssemblyVersion>
+		<FileVersion>10.6.8.93</FileVersion>
+		<InformationalVersion>10.6.8-rc.93+A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</InformationalVersion>
+		<RepositoryBranch>main</RepositoryBranch>
+		<RepositoryCommit>A94A8FE5CCB19BA61C4C0873D391E987982FBBD3</RepositoryCommit>
+	</PropertyGroup>
+</Project>
+";
+			AssertWrite(
+					versionPrefix: new Version( 10, 6, 8 ),
+					branch: "main",
+					tag: string.Empty,
+					build: 93,
+					sha1: "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
+					expectedProps: expectedProps
+				);
+		}
 		[Test]
 		public void ReleaseTag() {
 
