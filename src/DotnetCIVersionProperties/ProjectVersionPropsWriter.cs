@@ -22,7 +22,7 @@ namespace DotnetCIVersionProperties {
 			if( tag.Equals( $"v{ major }.{ minor }.{ patch }" ) ) {
 				versionSuffix = string.Empty;
 
-			} else if( branch.Equals( "master" ) ) {
+			} else if( branch.Equals( "master" ) || branch.Equals( "main" ) ) {
 				versionSuffix = $"rc.{ build }";
 
 			} else {
