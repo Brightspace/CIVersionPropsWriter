@@ -14,7 +14,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-		<TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+		<TargetFrameworks>net8.0;net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
 		<ToolCommandName>dotnet-ci-version-properties</ToolCommandName>
 	</PropertyGroup>
 </Project>
